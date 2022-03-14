@@ -6,7 +6,7 @@ SCRIPT=$(readlink -f $0)
 # Absolute path this script is in. /home/user/bin
 SCRIPTPATH=`dirname $SCRIPT`
 
-cd $SCRIPTPATH/../MiTemperature2
+cd $SCRIPTPATH/../3rdparty/MiTemperature2
 
 sensors=(
   "west;A4:C1:38:29:33:26;cigars"
@@ -24,7 +24,7 @@ for item in ${sensors[@]}; do
 
   if [[ "${sensor[0]}" == "$1" ]] || [[ "${sensor[2]}" == "$1" ]]; then
     # python3 ./LYWSD03MMC.py --device ${sensor[1]} -b -call $SCRIPTPATH/sendToPrometheus.py -n ${sensor[2]} -c 1
-    python3 ./LYWSD03MMC.py --device ${sensor[1]} -b -call $SCRIPTPATH/mi2-temp-humid-to-file.sh -n ${sensor[2]} -c 1
+    python3 ./LYWSD03MMC.py --device ${sensor[1]} -b -call ../../bin/mi2-temp-humid-to-file.sh -n ${sensor[2]} -c 1
     sleep 20
   fi
 done
