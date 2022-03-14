@@ -5,6 +5,8 @@
 push_file=/tmp/mi2-temp-humid-colector.prom
 add_types=1
 
+prefix=
+
 if [ -f $push_file ]; then
     grep TYPE $push_file -RIn > /dev/null && add_types=0
 fi
@@ -12,27 +14,27 @@ fi
 if [ $add_types -eq 1 ]; then
     
     cat <<EOF >> $push_file
-# TYPE test_temp_celsius gauge
-# HELP test_temp_celsius Temperature, celsius
-test_temp_celsius{sensor="$2"} $3
-# TYPE test_humidity_pct gauge
-# HELP test_humidity_pct Humidity, percentage
-test_humidity_pct{sensor="$2"} $4
-# TYPE test_battery_voltage gauge
-# HELP test_battery_voltage Battery, voltage
-test_battery_voltage{sensor="$2"} $5
-# TYPE test_battery_pct gauge
-# HELP test_battery_pct Humidity, percentage
-test_battery_pct{sensor="$2"} $6
+# TYPE ${prefix}temp_celsius gauge
+# HELP ${prefix}temp_celsius Temperature, celsius
+${prefix}temp_celsius{sensor="$2"} $3
+# TYPE ${prefix}humidity_pct gauge
+# HELP ${prefix}humidity_pct Humidity, percentage
+${prefix}humidity_pct{sensor="$2"} $4
+# TYPE ${prefix}battery_voltage gauge
+# HELP ${prefix}battery_voltage Battery, voltage
+${prefix}battery_voltage{sensor="$2"} $5
+# TYPE ${prefix}battery_pct gauge
+# HELP ${prefix}battery_pct Humidity, percentage
+${prefix}battery_pct{sensor="$2"} $6
 EOF
     
 else
     
     cat <<EOF >> $push_file
-test_temp_celsius{sensor="$2"} $3
-test_humidity_pct{sensor="$2"} $4
-test_battery_voltage{sensor="$2"} $5
-test_battery_pct{sensor="$2"} $6
+${prefix}temp_celsius{sensor="$2"} $3
+${prefix}humidity_pct{sensor="$2"} $4
+${prefix}battery_voltage{sensor="$2"} $5
+${prefix}battery_pct{sensor="$2"} $6
 EOF
     
 fi
