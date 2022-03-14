@@ -25,6 +25,8 @@ for item in ${sensors[@]}; do
   if [[ "${sensor[0]}" == "$1" ]] || [[ "${sensor[2]}" == "$1" ]]; then
     # python3 ./LYWSD03MMC.py --device ${sensor[1]} -b -call $SCRIPTPATH/sendToPrometheus.py -n ${sensor[2]} -c 1
     python3 ./LYWSD03MMC.py --device ${sensor[1]} -b -call ../../bin/mi2-temp-humid-colector.sh -n ${sensor[2]} -c 1
-    sleep 20
+    sleep 2
   fi
 done
+
+# bash $SCRIPTPATH/mi2-temp-humid-to-pushgateway.sh

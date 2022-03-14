@@ -1,5 +1,7 @@
 #! /bin/bash
 
+gateway_url=http://192.168.1.3:9091
+
 # /home/ubuntu/myhome-monitor/3rdparty/MiTemperature2/../../bin/mi2-temp-humid-to-file.sh sensorname,temperature,humidity,voltage,batteryLevel,timestamp kidsroom 23.77 46 3.094 99 1647290484
 
 cat <<EOF >> /tmp/mi2-temp-humid-colector.gauge
