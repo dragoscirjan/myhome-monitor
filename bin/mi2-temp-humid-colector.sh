@@ -6,7 +6,7 @@ push_file = /tmp/mi2-temp-humid-colector.push
 add_types = 1
 
 if [ -f $push_file ]; then
-    grep TYPE $push_file -RIn && add_types=0
+    grep TYPE $push_file -RIn > /dev/null && add_types=0
 fi
 
 if [ $add_types -eq 1 ]; then
