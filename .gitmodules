@@ -1,0 +1,3 @@
+[submodule "3rdpary/MiTemperature2"]
+	path = 3rdpary/MiTemperature2
+	url = https://gitee.com/zhzhzhy/MiTemperature2
