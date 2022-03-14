@@ -29,4 +29,4 @@ for item in ${sensors[@]}; do
   fi
 done
 
-# bash $SCRIPTPATH/mi2-temp-humid-to-pushgateway.sh
+bash $SCRIPTPATH/mi2-temp-humid-to-pushgateway.sh
