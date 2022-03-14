@@ -2,8 +2,8 @@
 
 # /home/ubuntu/myhome-monitor/3rdparty/MiTemperature2/../../bin/mi2-temp-humid-to-file.sh sensorname,temperature,humidity,voltage,batteryLevel,timestamp kidsroom 23.77 46 3.094 99 1647290484
 
-push_file = /tmp/mi2-temp-humid-colector.push
-add_types = 1
+push_file=/tmp/mi2-temp-humid-colector.prom
+add_types=1
 
 if [ -f $push_file ]; then
     grep TYPE $push_file -RIn > /dev/null && add_types=0
