@@ -1,6 +1,6 @@
 #! /bin/bash
 
-source .env
+source $(dirname $0).env
 
 if [ -f .env.local ]; then
     source .env.local
