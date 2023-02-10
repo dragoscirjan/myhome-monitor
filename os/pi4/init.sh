@@ -14,5 +14,5 @@
 
 crontab -r
 cat <<EOF
-*/30 * * * *    ubuntu  bash $(dirname $0/../..)/bin/crontab-mi2-temp-humid-sensors.sh east
+*/30 * * * *    ubuntu  bash $(dirname $0)/../../bin/crontab-mi2-temp-humid-sensors.sh east
 EOF
