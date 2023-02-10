@@ -1,3 +1,6 @@
 [submodule "3rdparty/MiTemperature2"]
 	path = 3rdparty/MiTemperature2
 	url = https://gitee.com/zhzhzhy/MiTemperature2
+[submodule "3rdparty/MiTemperature2_alt"]
+	path = 3rdparty/MiTemperature2_alt
+	url = https://github.com/JsBergbau/MiTemperature2
