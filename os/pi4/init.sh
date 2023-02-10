@@ -17,8 +17,6 @@ SCRIPTPATH=`dirname $SCRIPT`
 
 # cd $base_dir
 
-
-crontab -r
 cat > /tmp/crontab <<EOF
 */30 * * * *    ubuntu  bash $SCRIPTPATH/../../bin/crontab-mi2-temp-humid-sensors.sh east
 EOF
