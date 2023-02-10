@@ -1,9 +1,9 @@
 #! /bin/bash
 
-source $(dirname $0).env
+source $(dirname $0)/.env
 
-if [ -f .env.local ]; then
-    source .env.local
+if [ -f $(dirname $0)/.env.local ]; then
+    source $(dirname $0)/.env.local
 fi
 
 push_file=/tmp/mi2-temp-humid-colector.prom
