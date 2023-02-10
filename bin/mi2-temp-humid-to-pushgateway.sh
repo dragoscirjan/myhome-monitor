@@ -1,7 +1,13 @@
 #! /bin/bash
 
+source .env
+
+if [ -f .env.local ]; then
+    source .env.local
+fi
+
 push_file=/tmp/mi2-temp-humid-colector.prom
-gateway_url=http://192.168.1.3:9091
+gateway_url=$PROMETHEUS_PUSHGATEWAY_URL
 
 cat $push_file | curl -X POST -H "Content-type: text/plain" \
 --data-binary @- $gateway_url/metrics/job/tempBatch

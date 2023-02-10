@@ -6,7 +6,8 @@ SCRIPT=$(readlink -f $0)
 # Absolute path this script is in. /home/user/bin
 SCRIPTPATH=`dirname $SCRIPT`
 
-cd $SCRIPTPATH/../3rdparty/MiTemperature2
+# cd $SCRIPTPATH/../3rdparty/MiTemperature2
+cd $SCRIPTPATH/../3rdparty/MiTemperature2_alt
 
 sensors=(
   "west;A4:C1:38:29:33:26;cigars"
@@ -29,4 +30,4 @@ for item in ${sensors[@]}; do
   fi
 done
 
-bash $SCRIPTPATH/mi2-temp-humid-to-pushgateway.sh
+bash $SCRIPTPATH/mi2-temp-humid-to-pushgateway.sh $2
