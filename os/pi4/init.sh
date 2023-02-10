@@ -1,4 +1,5 @@
-#! /bin/bashset -ex
+#! /bin/bash
+set -ex
 
 # Absolute path to this script. /home/user/bin/foo.sh
 SCRIPT=$(readlink -f $0)
@@ -18,6 +19,8 @@ SCRIPTPATH=`dirname $SCRIPT`
 
 
 crontab -r
-cat <<EOF
+cat <<EOF > /tmp/crontab
 */30 * * * *    ubuntu  bash $SCRIPTPATH/../../bin/crontab-mi2-temp-humid-sensors.sh east
 EOF
+
+crontab /tmp/crontab
