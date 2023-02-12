@@ -21,105 +21,60 @@ endif
 LOCAL_PY=$(LOCAL_ENV)/python
 LOCAL_PIP=$(LOCAL_ENV)/pip
 LOCAL_PIP_INSTALL=$(LOCAL_PIP) install $(PIP_FLAGS)
+LOCAL_ANSIBLE=$(LOCAL_ENV)/ansible
 
+APR_NO_KEY=$(LOCAL_ANSIBLE)-playbook -i ./inventory.yml --ask-pass --ask-become-pass --user ubuntu
+APR_NO_INV=$(LOCAL_ANSIBLE)-playbook --private-key=.ssh/id_ed25519 --user root
+APBR=$(APR_NO_INV) -i ./inventory.yml
 
 configure: venv ## Configure your project for development (like venv but with git hooks)
-	$(LOCAL_PIP_INSTALL) pre-commit
 
 CLEAN_FULL=
-clean: clean-$(SHELL_IS) ## Clean all dist/temp folders
-
-clean-bash:
-	rm -rf .coverage .pytest_cache coverage-report dist env
-
-clean-powershell:
-	$(POWERSHELL) -File ./.scripts/make.ps1 -Action rmdir -Path ./.coverage
-	$(POWERSHELL) -File ./.scripts/make.ps1 -Action rmdir -Path ./.pytest_cache
-	$(POWERSHELL) -File ./.scripts/make.ps1 -Action rmdir -Path ./coverage-report
-	$(POWERSHELL) -File ./.scripts/make.ps1 -Action rmdir -Path ./dist
-	$(POWERSHELL) -File ./.scripts/make.ps1 -Action rmdir -Path ./env
+clean: ## Clean all dist/temp folders
+	rm -rf env
 
 docs: ## Generate documentation for the Project
 	$(LOCAL_ENV)/pdoc --html -o docs py_greet
 
 
-RELEASE_OPTIONS = -Patch -Dry
-RELEASE_PUBLISH =
-release: release-$(SHELL_IS) ## Publish code & mark for release
-	rm -rf dist/*
-	$(PY) setup.py sdist
-	$(PY) setup.py bdist_wheel
-ifneq ($(RELEASE_PUBLISH),)
-	twine upload dist/*
-endif
-
-release-bash:
-	bash ./.scripts/release-tag.sh $(RELEASE_OPTIONS)
-
-release-powershell:
-	$(POWERSHELL) -File ./.scripts/release-tag.ps1 $(RELEASE_OPTIONS)
+setup-pi2: ## Generate documentation for the pi2
 
 
-COV_HTML=coverage-report
-TEST_PATH=*_test.py
-TEST_LIB=unittest
-# TEST_LIB=pytest
-test: test-$(SHELL_IS) test-$(TEST_LIB) ## Run Tests
+setup-pi4: ## Generate documentation for the pi4
+	$(APBR) ./playbooks/pi4/grafana-setup.yml
 
-test-pytest:
-ifeq ($(TEST_PATH),*_test.py)
-TEST_PATH_X=./tests
-else
-TEST_PATH_X=./tests/$(TEST_PATH)
-endif
-test-pytest:
-	$(LOCAL_PY) -m pytest -v --cov=coverage --cov-report=html:$(COV_HTML) --cov-report=xml:$(COV_HTML)/$(COV_HTML).xml $(TEST_PATH_X)
 
-test-unittest: test-unittest-$(SHELL_IS)
+# setup-initial: ssh-keysync ## Install generic tools on all servers
+setup-initial: ## Install generic tools on all servers
+	# $(APR_NO_INV) -i ./inventory_temp.yml ./playbooks/netplan.yml
+	# $(APBR) ./playbooks/utils.yml
+	# $(APBR) ./playbooks/docker.yml
+	$(APBR) ./playbooks/git-clone.yml
 
-test-unittest-bash:
-	$(LOCAL_ENV)/coverage --version
-	$(LOCAL_ENV)/coverage run -m unittest discover -s tests -p $(TEST_PATH) -v
-	$(LOCAL_ENV)/coverage html -d $(COV_HTML)
-	$(LOCAL_ENV)/coverage xml -o $(COV_HTML)/$(COV_HTML).xml
 
-test-unittest-powershell:
-	$(LOCAL_ENV)/coverage.exe --version
-	$(LOCAL_ENV)/coverage.exe run -m unittest discover -s tests -p $(TEST_PATH) -v
-	$(LOCAL_ENV)/coverage.exe html -d $(COV_HTML)
-	$(LOCAL_ENV)/coverage.exe xml -o $(COV_HTML)/$(COV_HTML).xml
+ssh-keygen: ## Generate a SSH key
+	rm -rf ./.ssh
+	mkdir -p ./.ssh
+	ssh-keygen -t ed25519 -C "dragos.cirjan@gmail.com" -f ./.ssh/id_ed25519 -q -N ""
 
-test-bash:
-
-test-powershell:
+ssh-keysync: ssh-keygen ## Generate & Synchronze SSH Keys to the affected hosts
+	$(APR_NO_KEY) $(ANSIBLE_OPTIONS) ./playbooks/ssh-key.yml
 
 
 VIRTUALENV_ARGS =
 venv: venv-clean virtualenv ## Create a Virtual Environment
 	$(PY) -m virtualenv $(VIRTUALENV_ARGS) --prompt '|> $(PROJECT) <| ' env
 	$(LOCAL_PIP) install -r requirements-dev.txt
+	$(LOCAL_PY) -m pip install --upgrade pip
+
 	@echo =====================================================================
 	@echo = VirtualENV Setup Complete. Now run: source env/bin/activate       =
 	@echo =====================================================================
 
 
-venv-clean: venv-clean-$(SHELL_IS)
-
-venv-clean-bash:
+venv-clean:
 	rm -rf ./env
 
-venv-clean-powershell:
-	$(POWERSHELL) -File ./.scripts/make.ps1 -Action rmdir -Path ./env
 
-
-virtualenv: virtualenv-$(SHELL_IS)
-
-virtualenv-bash:
-	$(PIP_INSTALL) virtualenv
-
-virtualenv-powershell:
-	@$(POWERSHELL) -Command "Write-Host -ForegroundColor Red 'If you have a global python installation, please run the following command with elevated rights:'"
-	@$(POWERSHELL) -Command "Write-Host -ForegroundColor Yellow '$(PIP_INSTALL) virtualenv'"
-	@$(POWERSHELL) -Command "Write-Host -ForegroundColor Red 'as our attempt to install `virtualenv` will fail.'"
-	@$(POWERSHELL) -Command "Write-Host ' '"
+virtualenv:
 	$(PIP_INSTALL) virtualenv

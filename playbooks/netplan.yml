@@ -1,0 +1,37 @@
+---
+# Playbook to configure static IP on Ubuntu using netplan
+
+- name: Configure static IP on Ubuntu
+  hosts: all
+  become: false
+  vars:
+    static_ip:
+      east: "192.168.86.94"
+      west: "192.168.86.92"
+
+  tasks:
+    - name: Create netplan config file
+      copy:
+        dest: "/etc/netplan/01-network-manager-all.yaml"
+        content: |
+          # This file is generated from information provided by the datasource.  Changes
+          # to it will not persist across an instance reboot.  To disable cloud-init's
+          # network configuration capabilities, write a file
+          # /etc/cloud/cloud.cfg.d/99-disable-network-config.cfg with the following:
+          # network: {config: disabled}
+          network:
+            ethernets:
+              eth0:
+          #      dhcp4: true
+          #      optional: true
+                dhcp4: false
+                optional: false
+                addresses:
+                  - {{ static_ip[inventory_hostname] }}/24
+                gateway4: 192.168.86.1
+                nameservers:
+                  addresses: [8.8.8.8, 8.8.4.4, 1.1.1.1]
+            version: 2
+
+    - name: Apply netplan configuration
+      shell: netplan apply

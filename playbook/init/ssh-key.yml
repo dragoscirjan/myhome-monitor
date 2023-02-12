@@ -1,9 +1,0 @@
-- name: Add SSH key to authorized_keys
-  hosts: all
-  become: yes
-  tasks:
-    - name: Copy SSH key to authorized_keys
-      authorized_key:
-        user: ubuntu
-        state: present
-        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"

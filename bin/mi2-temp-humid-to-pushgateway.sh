@@ -1,13 +1,13 @@
 #! /bin/bash
+set -ex
 
-source $(dirname $0)/.env
-
-if [ -f $(dirname $0)/.env.local ]; then
-    source $(dirname $0)/.env.local
-fi
+# Absolute path to this script. /home/user/bin/foo.sh
+SCRIPT=$(readlink -f $0)
+# Absolute path this script is in. /home/user/bin
+SCRIPTPATH=`dirname $SCRIPT`
 
 push_file=/tmp/mi2-temp-humid-colector.prom
-gateway_url=$PROMETHEUS_PUSHGATEWAY_URL
+gateway_url=$(yq ".prometheus.gateway_url" $(SCRIPTPATH)/../config.yml)
 
 cat $push_file | curl -X POST -H "Content-type: text/plain" \
 --data-binary @- $gateway_url/metrics/job/tempBatch

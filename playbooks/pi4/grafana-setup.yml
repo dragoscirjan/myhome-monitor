@@ -1,0 +1,25 @@
+- name: PI4 Grafana Setup
+  hosts: east
+  become: true
+  tasks:
+    - name: Purge https://github.com/dragoscirjan/grafana-setup
+      shell: |
+        rm -rf /opt/grafana-setup
+
+    - name: Clone https://github.com/dragoscirjan/grafana-setup
+      git:
+        repo: https://github.com/dragoscirjan/grafana-setup
+        dest: /opt/grafana-setup
+        version: main
+        track_submodules: true
+        clone: yes
+
+    - name: Launch grafana docker setup
+      shell: |
+        docker compose \
+          -f docker-compose.yml \
+          -f docker-compose.prometheus.yml \
+          -f docker-compose.prometheus-exporter.yml \
+          up -d
+      args:
+        chdir: /opt/grafana-setup

@@ -1,0 +1,15 @@
+- name: Clone Git Repositories
+  hosts: all
+  become: true
+  tasks:
+    - name: Purge https://github.com/dragoscirjan/myhome-monitor
+      shell: |
+        rm -rf /opt/myhome-monitor
+
+    - name: Clone https://github.com/dragoscirjan/myhome-monitor
+      git:
+        repo: https://github.com/dragoscirjan/myhome-monitor
+        dest: /opt/myhome-monitor
+        version: main
+        track_submodules: true
+        clone: yes
