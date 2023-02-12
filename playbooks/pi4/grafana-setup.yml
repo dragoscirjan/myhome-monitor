@@ -23,3 +23,9 @@
           up -d
       args:
         chdir: /opt/grafana-setup
+
+    # - name: Ensure temperature cron job
+    #   cron:
+    #     name: "check temperature east"
+    #     minute: "*/30"
+    #     job: "bash /opt/myhome-monitor/bin/crontab-mi2-temp-humid-sensors.sh east"

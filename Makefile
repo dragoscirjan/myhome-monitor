@@ -40,7 +40,7 @@ docs: ## Generate documentation for the Project
 setup-pi2: ## Generate documentation for the pi2
 
 
-setup-pi4: ## Generate documentation for the pi4
+setup-pi4: setup-initial ## Generate documentation for the pi4
 	$(APBR) ./playbooks/pi4/grafana-setup.yml
 
 
