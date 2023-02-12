@@ -8,8 +8,6 @@ SCRIPTPATH=`dirname $SCRIPT`
 
 speed_data=$(speedtest --json)
 
-if_name=$(ip addr | awk '/state UP/ {print $2}' | sed 's/.$//')
-
 if_dld_speed=$(echo $speed_data | jq ".download" -r)
 if_dld_speed=$(echo "scale=2 ; $if_dld_speed / 1" | bc)
 if_uld_speed=$(echo $speed_data | jq ".upload" -r)
@@ -17,11 +15,16 @@ if_uld_speed=$(echo "scale=2 ; $if_uld_speed / 1" | bc)
 if_ping=$(echo $speed_data | jq ".ping" -r)
 if_ping=$(echo "scale=2 ; $if_ping / 1" | bc)
 
-if_ssid_name=$(nmcli -t -f name,device connection show --active | grep $if_name | cut -d\: -f1)
 
+
+if_name=$(ip addr | awk '/state UP/ {print $2}' | sed 's/.$//')
+
+if_ssid_name=$(nmcli -t -f name,device connection show --active | grep $if_name | cut -d\: -f1)
 if [ "$if_ssid_name" == "" ]; then
   if_ssid_name=$(iw dev $if_name info | grep ssid | awk '{print $2}')
 fi
+
+
 
 push_file=/tmp/speed-test.prom
 add_types=1
