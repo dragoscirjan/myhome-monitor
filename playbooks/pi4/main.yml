@@ -4,6 +4,6 @@
   tasks:
     - name: Ensure temperature cron job
       cron:
-        name: "check temperature east"
+        name: "check temperature west"
         minute: "*/30"
         job: "bash /opt/myhome-monitor/bin/crontab-mi2-temp-humid-sensors.sh west"

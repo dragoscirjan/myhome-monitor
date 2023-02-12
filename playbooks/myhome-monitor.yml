@@ -20,15 +20,18 @@
           - python3
           - python3-pip
           - bluez
-          - libbluetooth-dev
           - build-essential
+          - iw
+          - libbluetooth-dev
           - libglib2.0-dev
+          - wifi-qr
         state: present
 
     - name: Install python dependencies
       pip:
         name:
           - bluepy
-          - requests
           - paho-mqtt
+          - requests
+          - speedtest-cli
         state: present

@@ -1,5 +1,5 @@
 - name: PI2 Setup
-  hosts: west
+  hosts: east
   become: true
   tasks:
     - name: Ensure temperature cron job
