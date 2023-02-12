@@ -52,9 +52,9 @@ EOF
 else
 
   cat <<EOF >> $push_file
-${prefix}net_download{if="$if_name"}{ssid="$if_ssid_name"} $(echo $speed_data | jq ".download" -r)
-${prefix}net_upload{if="$if_name"}{ssid="$if_ssid_name"} $(echo $speed_data | jq ".upload" -r)
-${prefix}net_upload{if="$if_name"}{ssid="$if_ssid_name"} $(echo $speed_data | jq ".ping" -r)
+${prefix}net_download{if="$if_name"}{ssid="$if_ssid_name"} $if_dld_speed
+${prefix}net_upload{if="$if_name"}{ssid="$if_ssid_name"} $if_uld_speed
+${prefix}net_upload{if="$if_name"}{ssid="$if_ssid_name"} $if_ping
 EOF
 
 fi
