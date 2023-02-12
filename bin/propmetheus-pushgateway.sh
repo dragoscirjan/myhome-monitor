@@ -6,7 +6,7 @@ SCRIPT=$(readlink -f $0)
 # Absolute path this script is in. /home/user/bin
 SCRIPTPATH=`dirname $SCRIPT`
 
-push_file=/tmp/mi2-temp-humid-colector.prom
+push_file=$1
 gateway_url=$(yq ".prometheus.gateway_url" $SCRIPTPATH/../config.yml)
 
 cat $push_file | curl -X POST -H "Content-type: text/plain" \
