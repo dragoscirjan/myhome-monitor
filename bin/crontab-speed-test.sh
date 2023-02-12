@@ -42,10 +42,10 @@ if [ $add_types -eq 1 ]; then
 # HELP ${prefix}net_download Download Speed, MBps
 ${prefix}net_download{if="$if_name"}{ssid="$if_ssid_name"} $if_dld_speed
 # TYPE ${prefix}net_download gauge
-# HELP ${prefix}net_download Download Speed, MBps
+# HELP ${prefix}net_download Upload Speed, MBps
 ${prefix}net_upload{if="$if_name"}{ssid="$if_ssid_name"} $if_uld_speed
 # TYPE ${prefix}net_ping gauge
-# HELP ${prefix}net_ping Download Speed, seconds
+# HELP ${prefix}net_ping Ping, seconds
 ${prefix}net_upload{if="$if_name"}{ssid="$if_ssid_name"} $if_ping
 EOF
 
