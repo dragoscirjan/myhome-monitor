@@ -13,3 +13,22 @@
         version: main
         track_submodules: true
         clone: yes
+
+    - name: Install apt dependencies
+      apt:
+        name:
+          - python3
+          - python3-pip
+          - bluez
+          - libbluetooth-dev
+          - build-essential
+          - libglib2.0-dev
+        state: present
+
+    - name: Install python dependencies
+      pip:
+        name:
+          - bluepy
+          - requests
+          - paho-mqtt
+        state: present

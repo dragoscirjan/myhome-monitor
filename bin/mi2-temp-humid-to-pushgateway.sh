@@ -7,7 +7,7 @@ SCRIPT=$(readlink -f $0)
 SCRIPTPATH=`dirname $SCRIPT`
 
 push_file=/tmp/mi2-temp-humid-colector.prom
-gateway_url=$(yq ".prometheus.gateway_url" $(SCRIPTPATH)/../config.yml)
+gateway_url=$(yq ".prometheus.gateway_url" $SCRIPTPATH/../config.yml)
 
 cat $push_file | curl -X POST -H "Content-type: text/plain" \
 --data-binary @- $gateway_url/metrics/job/tempBatch
