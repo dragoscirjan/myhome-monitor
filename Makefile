@@ -38,10 +38,12 @@ docs: ## Generate documentation for the Project
 
 
 setup-pi2: ## Generate documentation for the pi2
+	$(APBR) ./playbooks/pi2/main.yml
 
 
 setup-pi4: setup-initial ## Generate documentation for the pi4
 	$(APBR) ./playbooks/pi4/grafana-setup.yml
+	$(APBR) ./playbooks/pi4/main.yml
 
 
 # setup-initial: ssh-keysync ## Install generic tools on all servers

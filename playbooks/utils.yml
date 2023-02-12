@@ -1,7 +1,7 @@
 ---
 - name: Install make, build-essential, netstat, git, jq, yq
   hosts: all
-  become: yes
+  become: true
   tasks:
     - name: Install dependencies
       package:
@@ -42,12 +42,12 @@
         set -ex
         arch=$(dpkg --print-architecture)
         if [ $arch == *"arm64"* ] || [ $arch == *"aarch64"* ]; then
-            curl https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_arm64 -o /usr/local/bin/yq
+          curl -L -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.30.8/yq_linux_arm64
         else
           if [ $arch == *"armv"* ] || [ $arch == *"armh"* ]; then
-              curl https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_arm -o /usr/local/bin/yq
+            curl -L -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.30.8/yq_linux_arm
           else
-              curl https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_amd64 -o /usr/local/bin/yq
+            curl -L -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v4.30.8/yq_linux_amd64
           fi
         fi
         chmod +x /usr/local/bin/yq

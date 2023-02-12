@@ -8,12 +8,12 @@ add_types=1
 prefix=
 
 if [ -f $push_file ]; then
-    grep TYPE $push_file -RIn > /dev/null && add_types=0
+  grep TYPE $push_file -RIn > /dev/null && add_types=0
 fi
 
 if [ $add_types -eq 1 ]; then
-    
-    cat <<EOF >> $push_file
+
+  cat <<EOF >> $push_file
 # TYPE ${prefix}temp_celsius gauge
 # HELP ${prefix}temp_celsius Temperature, celsius
 ${prefix}temp_celsius{sensor="$2"} $3
@@ -27,14 +27,14 @@ ${prefix}battery_voltage{sensor="$2"} $5
 # HELP ${prefix}battery_pct Humidity, percentage
 ${prefix}battery_pct{sensor="$2"} $6
 EOF
-    
+
 else
-    
-    cat <<EOF >> $push_file
+
+  cat <<EOF >> $push_file
 ${prefix}temp_celsius{sensor="$2"} $3
 ${prefix}humidity_pct{sensor="$2"} $4
 ${prefix}battery_voltage{sensor="$2"} $5
 ${prefix}battery_pct{sensor="$2"} $6
 EOF
-    
+
 fi
