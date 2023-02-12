@@ -59,3 +59,4 @@ EOF
 
 fi
 
+bash $SCRIPTPATH/propmetheus-pushgateway.sh $push_file

@@ -30,4 +30,4 @@ for item in ${sensors[@]}; do
   fi
 done
 
-bash $SCRIPTPATH/mi2-temp-humid-to-pushgateway.sh $2
+bash $SCRIPTPATH/propmetheus-pushgateway.sh /tmp/mi2-temp-humid-colector.prom
