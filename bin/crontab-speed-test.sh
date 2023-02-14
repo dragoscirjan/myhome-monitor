@@ -6,6 +6,8 @@ SCRIPT=$(readlink -f $0)
 # Absolute path this script is in. /home/user/bin
 SCRIPTPATH=`dirname $SCRIPT`
 
+if_type="lan"
+
 speed_data=$(speedtest --json)
 
 if_dld_speed=$(echo $speed_data | jq ".download" -r)
@@ -24,6 +26,10 @@ if [ "$if_ssid_name" == "" ]; then
   if_ssid_name=$(iw dev $if_name info | grep ssid | awk '{print $2}')
 fi
 
+if [ "$if_ssid_name" == "" ]; then
+  if_type="wifi"
+fi
+
 
 
 push_file=/tmp/speed-test.prom
@@ -40,21 +46,21 @@ if [ $add_types -eq 1 ]; then
   cat <<EOF >> $push_file
 # TYPE ${prefix}net_download gauge
 # HELP ${prefix}net_download Download Speed, MBps
-${prefix}net_download{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)"} $if_dld_speed
+${prefix}net_download{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)",if_type="${if_type}"} $if_dld_speed
 # TYPE ${prefix}net_upload gauge
 # HELP ${prefix}net_upload Upload Speed, MBps
-${prefix}net_upload{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)"} $if_uld_speed
+${prefix}net_upload{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)",if_type="${if_type}"} $if_uld_speed
 # TYPE ${prefix}net_ping gauge
 # HELP ${prefix}net_ping Ping, seconds
-${prefix}net_ping{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)"} $if_ping
+${prefix}net_ping{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)",if_type="${if_type}"} $if_ping
 EOF
 
 else
 
   cat <<EOF >> $push_file
-${prefix}net_download{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)"} $if_dld_speed
-${prefix}net_upload{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)"} $if_uld_speed
-${prefix}net_ping{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)"} $if_ping
+${prefix}net_download{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)",if_type="${if_type}"} $if_dld_speed
+${prefix}net_upload{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)",if_type="${if_type}"} $if_uld_speed
+${prefix}net_ping{if="$if_name",ssid="${if_ssid_name:-none}",hostname="$(hostname)",if_type="${if_type}"} $if_ping
 EOF
 
 fi
