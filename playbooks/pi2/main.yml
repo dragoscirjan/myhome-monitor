@@ -7,3 +7,9 @@
         name: "check temperature east"
         minute: "*/30"
         job: "bash /opt/myhome-monitor/bin/crontab-mi2-temp-humid-sensors.sh east"
+
+    - name: Ensure temperature cron job
+      cron:
+        name: "check temperature west"
+        minute: "*/30"
+        job: "bash /opt/myhome-monitor/bin/crontab-speed-test.sh"
