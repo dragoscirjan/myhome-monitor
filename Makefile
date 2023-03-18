@@ -49,7 +49,7 @@ setup-pi4: ## Setup for the PI4
 # setup-initial: ssh-keysync ## Install generic tools on all servers
 setup-initial: ## Install generic tools on all servers
 	# $(APR_NO_INV) -i ./inventory_temp.yml ./playbooks/netplan.yml
-	$(APR_NO_INV) -i ./inventory_temp.yml ./playbooks/hostname.yml
+	$(APR_NO_INV) -i ./inventory.yml ./playbooks/hostname.yml
 	# $(APBR) ./playbooks/utils.yml
 	# $(APBR) ./playbooks/docker.yml
 	# $(APBR) ./playbooks/myhome-monitor.yml
