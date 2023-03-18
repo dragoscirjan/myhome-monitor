@@ -1,19 +1,17 @@
 ---
-- name: Change hostname
+- name: Change hostname based on inventory variables
   hosts: all
   become: true
   vars:
-    new_hostname: "{{ inventory_hostname }}"
+    west_hostname: "ubuntu-pi4x"
+    east_hostname: "ubuntu-pi2x"
   tasks:
-    - name: Update /etc/hostname
-      lineinfile:
-        dest: /etc/hostname
-        line: "{{ new_hostname }}"
-      notify:
-        - Restart hostname service
+    - name: Set hostname for west
+      when: "'west' in inventory_hostname"
+      hostname:
+        name: "{{ west_hostname }}"
 
-  handlers:
-    - name: Restart hostname service
-      service:
-        name: systemd-hostnamed
-        state: restarted
+    - name: Set hostname for east
+      when: "'east' in inventory_hostname"
+      hostname:
+        name: "{{ east_hostname }}"
