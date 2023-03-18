@@ -3,8 +3,8 @@
   hosts: all
   become: true
   vars:
-    west_hostname: "ubuntu-pi4x"
-    east_hostname: "ubuntu-pi2x"
+    west_hostname: "ubuntu-pi4"
+    east_hostname: "ubuntu-pi2"
   tasks:
     - name: Set hostname for west
       when: "'west' in inventory_hostname"
