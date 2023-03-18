@@ -1,0 +1,27 @@
+---
+- name: Change hostname
+  hosts: all
+  become: yes
+  vars:
+    new_hostname: "{{ inventory_hostname }}"
+  tasks:
+    - name: Update /etc/hostname
+      lineinfile:
+        dest: /etc/hostname
+        line: "{{ new_hostname }}"
+      notify:
+        - Restart hostname service
+
+    - name: Update /etc/hosts
+      lineinfile:
+        dest: /etc/hosts
+        regexp: '^127\.0\.0\.1'
+        line: '127.0.0.1 localhost {{ new_hostname }}'
+      notify:
+        - Restart hostname service
+
+  handlers:
+    - name: Restart hostname service
+      service:
+        name: systemd-hostnamed
+        state: restarted
