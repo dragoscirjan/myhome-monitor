@@ -27,6 +27,8 @@ APR_NO_KEY=$(LOCAL_ANSIBLE)-playbook -i ./inventory.yml --ask-pass --ask-become-
 APR_NO_INV=$(LOCAL_ANSIBLE)-playbook --private-key=.ssh/id_ed25519 --user root
 APBR=$(APR_NO_INV) -i ./inventory.yml
 
+TEMP_INVENTORY=./inventory.yml
+
 configure: venv ## Configure your project for development (like venv but with git hooks)
 
 CLEAN_FULL=
@@ -48,11 +50,11 @@ setup-pi4: ## Setup for the PI4
 
 # setup-initial: ssh-keysync ## Install generic tools on all servers
 setup-initial: ## Install generic tools on all servers
-	# $(APR_NO_INV) -i ./inventory_temp.yml ./playbooks/netplan.yml
-	# $(APR_NO_INV) -i ./inventory.yml ./playbooks/hostname.yml
+	$(APR_NO_INV) -i $(TEMP_INVENTORY) ./playbooks/netplan.yml
+	$(APR_NO_INV) -i ./inventory.yml ./playbooks/hostname.yml
 	$(APBR) ./playbooks/utils.yml
-	# $(APBR) ./playbooks/docker.yml
-	# $(APBR) ./playbooks/myhome-monitor.yml
+	$(APBR) ./playbooks/docker.yml
+	$(APBR) ./playbooks/myhome-monitor.yml
 
 
 ssh-keygen: ## Generate a SSH key
