@@ -44,6 +44,7 @@
         src: ../install/yq.sh
         dest: /tmp/yq.sh
         mode: "u+rwx,g+rx,o+rx"   # set the permissions for the file
+        relative: yes
 
     - name: Execute bash file on remote machine
       script: "/tmp/yq.sh {{yq_version}}"
@@ -52,10 +53,3 @@
     - name: Show yq install
       debug:
         var: yq_install.stdout_lines
-
-    - name: Verify jq installation
-      shell: jq --version
-      register: jq_version
-    - name: Show jq version
-      debug:
-        var: jq_version.stdout_lines
