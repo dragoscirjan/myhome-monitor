@@ -39,7 +39,7 @@ docs: ## Generate documentation for the Project
 	$(LOCAL_ENV)/pdoc --html -o docs py_greet
 
 
-setup-pi: setup-initial setup-pi2 setup-pi4 ## Setup for all PIs
+setup-pi: setup setup-pi2 setup-pi4 ## Setup for all PIs
 
 setup-pi2: ## Setup for the PI2
 	$(APBR) ./playbooks/pi2/main.yml
@@ -49,9 +49,11 @@ setup-pi4: ## Setup for the PI4
 	$(APBR) ./playbooks/pi4/main.yml
 
 # setup-initial: ssh-keysync ## Install generic tools on all servers
-setup-initial: ## Install generic tools on all servers
+setup-initial: setup ## Install generic tools on all servers
 	$(APR_NO_INV) -i $(TEMP_INVENTORY) ./playbooks/netplan.yml
 	$(APR_NO_INV) -i ./inventory.yml ./playbooks/hostname.yml
+
+setup:
 	$(APBR) ./playbooks/utils.yml
 	$(APBR) ./playbooks/docker.yml
 	$(APBR) ./playbooks/myhome-monitor.yml

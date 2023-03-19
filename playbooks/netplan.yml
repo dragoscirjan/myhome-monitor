@@ -6,8 +6,8 @@
   become: false
   vars:
     static_ip:
-      east: "192.168.86.94"
-      west: "192.168.86.92"
+      east: "192.168.86.92"
+      west: "192.168.86.94"
 
   tasks:
     - name: Create netplan config file
