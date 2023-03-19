@@ -20,9 +20,9 @@ if_ping=$(echo "scale=2 ; $if_ping / 1" | bc)
 # if_name=$(ip route show | head -n1 | awk -F' ' '{print $5}')
 if_name=$(ip addr | awk '/state UP/ {print $2}' | sed 's/.$//' | head -n 1)
 
-if_ssid_name=$(nmcli -t -f name,device connection show --active | grep $if_name | cut -d\: -f1)
+if_ssid_name=$(nmcli -t -f name,device connection show --active | grep $if_name | cut -d\: -f1 | head -n1)
 if [ "$if_ssid_name" == "" ]; then
-  if_ssid_name=$(iw dev $if_name info | grep ssid | awk '{print $2}')
+  if_ssid_name=$(iw dev $if_name info | grep ssid | awk '{print $2}' | head -n1)
 fi
 
 if [ "$if_ssid_name" == "" ]; then
