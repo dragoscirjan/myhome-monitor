@@ -1,3 +1,5 @@
+#! /bin/bash
+
 set -ex
 arch=$(dpkg --print-architecture)
 if [[ $arch == *"arm64"* || $arch == *"aarch64"* ]]; then
