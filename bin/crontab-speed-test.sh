@@ -6,7 +6,7 @@ SCRIPT=$(readlink -f $0)
 # Absolute path this script is in. /home/user/bin
 SCRIPTPATH=`dirname $SCRIPT`
 
-if_type="lan"
+if_type="wifi"
 
 speed_data=$(speedtest --json)
 
@@ -17,6 +17,7 @@ if_uld_speed=$(echo "scale=2 ; $if_uld_speed / 1" | bc)
 if_ping=$(echo $speed_data | jq ".ping" -r)
 if_ping=$(echo "scale=2 ; $if_ping / 1" | bc)
 
+# if_name=$(ip route show | head -n1 | awk -F' ' '{print $5}')
 if_name=$(ip addr | awk '/state UP/ {print $2}' | sed 's/.$//' | head -n 1)
 
 if_ssid_name=$(nmcli -t -f name,device connection show --active | grep $if_name | cut -d\: -f1)
@@ -25,10 +26,8 @@ if [ "$if_ssid_name" == "" ]; then
 fi
 
 if [ "$if_ssid_name" == "" ]; then
-  if_type="wifi"
+  if_type="lan"
 fi
-
-
 
 push_file=/tmp/speed-test.prom
 add_types=1
