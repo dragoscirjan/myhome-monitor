@@ -46,7 +46,7 @@
         mode: "u+rwx,g+rx,o+rx"   # set the permissions for the file
 
     - name: Execute bash file on remote machine
-      shell: /tmp/yq.sh
+      script: "/tmp/yq.sh {{yq_version}}"
       register: yq_install
 
     - name: Show yq install
