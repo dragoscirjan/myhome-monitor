@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars:
-    yq_version: 4.31.2
+    yq_version: 4.32.1
   tasks:
     - name: Install dependencies
       package:

@@ -9,6 +9,8 @@ SCRIPTPATH=`dirname $SCRIPT`
 push_file=$1
 gateway_url=$(yq ".prometheus.gateway_url" $SCRIPTPATH/../config.yml)
 
+cat $push_file
+
 cat $push_file | curl -X POST -H "Content-type: text/plain" --data-binary @- $gateway_url/metrics/job/tempBatch
 
 echo "" > $push_file
