@@ -41,7 +41,7 @@
 
     - name: Copy yq installer
       copy:
-        src: install/yq.sh
+        src: ../install/yq.sh
         dest: /tmp/yq.sh
         mode: "u+rwx,g+rx,o+rx"   # set the permissions for the file
 
