@@ -17,7 +17,7 @@ if_uld_speed=$(echo "scale=2 ; $if_uld_speed / 1" | bc)
 if_ping=$(echo $speed_data | jq ".ping" -r)
 if_ping=$(echo "scale=2 ; $if_ping / 1" | bc)
 
-if_name=$(ip addr | awk '/state UP/ {print $2}' | sed 's/.$//')
+if_name=$(ip addr | awk '/state UP/ {print $2}' | sed 's/.$//' | head -n 1)
 
 if_ssid_name=$(nmcli -t -f name,device connection show --active | grep $if_name | cut -d\: -f1)
 if [ "$if_ssid_name" == "" ]; then
