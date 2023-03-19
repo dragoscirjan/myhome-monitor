@@ -43,10 +43,10 @@
       shell: |
         set -ex
         arch=$(dpkg --print-architecture)
-        if [ $arch == *"arm64"* ] || [ $arch == *"aarch64"* ]; then
+        if [[ $arch == *"arm64"* ]] || [[ $arch == *"aarch64"* ]]; then
           curl -L -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v{{yq_version}}/yq_linux_arm64
         else
-          if [ $arch == *"armv"* ] || [ $arch == *"armh"* ]; then
+          if [[ $arch == *"armv"* ]] || [[ $arch == *"armh"* ]]; then
             curl -L -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v{{yq_version}}/yq_linux_arm
           else
             curl -L -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v{{yq_version}}/yq_linux_amd64
