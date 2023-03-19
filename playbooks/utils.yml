@@ -39,35 +39,21 @@
     #     name: jq
     #     state: present
 
-    - name: Install yq
-      shell: |
-        set -ex
-        arch=$(dpkg --print-architecture)
-        if [[ $arch == *"arm64"* || $arch == *"aarch64"* ]]; then
-          echo "installing arm64"
-          curl -L -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v{{yq_version}}/yq_linux_arm64
-        else
-          if [[ $arch == *"armv"* || $arch == *"armh"* ]]; then
-            echo "installing arm"
-            curl -L -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v{{yq_version}}/yq_linux_arm
-          else
-            echo "installing amd64"
-            curl -L -o /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/v{{yq_version}}/yq_linux_amd64
-          fi
-        fi
-        chmod +x /usr/local/bin/yq
-      when: "'Debian' in ansible_os_family or 'Ubuntu' in ansible_os_family"
+    - name: Copy yq installer
+      copy:
+        src: ./install/yq.sh
+        dest: /tmp/yq.sh
+        mode: "u+rwx,g+rx,o+rx"   # set the permissions for the file
+      become: true
+
+    - name: Execute bash file on remote machine
+      shell: /tmp/yq.sh
+      become: true
       register: yq_install
+
     - name: Show yq install
       debug:
         var: yq_install.stdout_lines
-
-    - name: Verify yq installation
-      shell: yq --version
-      register: yq_version
-    - name: Show yq version
-      debug:
-        var: yq_version.stdout_lines
 
     - name: Verify jq installation
       shell: jq --version
